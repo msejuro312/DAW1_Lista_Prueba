@@ -2,6 +2,7 @@ package pe.cibertec.service;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import pe.cibertec.entities.Producto;
 import pe.cibertec.repository.ProductoRepository;
@@ -22,6 +23,7 @@ public class ProductoService {
     }
 
     //inserción por lotes (batching)
+    @Transactional
     public void registrarLote(List<Producto> productos){
         int i=0;
         for (Producto p: productos){
@@ -33,4 +35,15 @@ public class ProductoService {
             }
         }
     }
+    public List<Producto> listarTodos(){
+        return  em.createQuery("SELECT p from Producto p", Producto.class)
+                .setHint("org.hibernate.fetchSize",5)//Trae todos, pero lee de 5 en 5
+                .getResultList();
+    }
+
+    public List<Producto> buscar(String nombre){
+        return productoRepository.findByNombre(nombre);
+    }
+
 }
+
