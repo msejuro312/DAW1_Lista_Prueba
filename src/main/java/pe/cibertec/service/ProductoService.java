@@ -1,4 +1,4 @@
-package pe.cibertec.servicios;
+package pe.cibertec.service;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
