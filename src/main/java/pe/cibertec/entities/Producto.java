@@ -13,7 +13,7 @@ public class Producto {
     private Long id;
     private String nombre;
     private Double precio;
-    //bloque de concurrencia optimista
+    //bloqueo de concurrencia optimista
     @Version
     private Integer version;
 
