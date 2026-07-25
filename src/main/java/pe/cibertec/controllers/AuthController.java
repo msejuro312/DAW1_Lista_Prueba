@@ -21,7 +21,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest)
     {
-        Usuario usuario = usuarioRepository.findyByCorreo(loginRequest.getCorreo()).orElse(null);
+        Usuario usuario = usuarioRepository.findByCorreo(loginRequest.getCorreo()).orElse(null);
         if(usuario == null || !usuario.getClave().equals(loginRequest.getClave())){
             return ResponseEntity.status(401).body("Credenciales inválidas");
         }else {

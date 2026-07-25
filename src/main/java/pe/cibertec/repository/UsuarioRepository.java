@@ -6,5 +6,5 @@ import pe.cibertec.entities.Usuario;
 import java.util.Optional;
 
 public interface UsuarioRepository extends JpaRepository <Usuario, Long> {
-    Optional <Usuario> findyByCorreo(String correo);
+    Optional <Usuario> findByCorreo(String correo);
 }
