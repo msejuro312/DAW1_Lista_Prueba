@@ -8,4 +8,7 @@ import java.util.List;
 public interface ListaCompraRepository extends JpaRepository<ListaCompra, Long> {
     List<ListaCompra> findByUsuarioId(Long idUsuario);
 
+    Long id(Long id);
+
+
 }
