@@ -75,4 +75,14 @@ public class ListaCompraController {
         }
         return ResponseEntity.ok(items);
     }
+
+    @GetMapping("/{idLista}/items")
+    public ResponseEntity<List<ItemLista>> obtenerItemsPorEstado(@PathVariable Long idLista, @RequestParam String estado)
+    {
+        List<ItemLista> items = itemListaRepository.buscarPorEstado(idLista, estado);
+        if (items.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(items);
+    }
 }
