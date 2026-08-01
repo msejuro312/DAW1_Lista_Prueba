@@ -1,5 +1,9 @@
 package pe.cibertec.controllers;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pe.cibertec.entities.ItemLista;
@@ -85,4 +89,27 @@ public class ListaCompraController {
         }
         return ResponseEntity.ok(items);
     }
+
+    @GetMapping("/usuario/{idUsuario}/paginado")
+    public Page<ListaCompra> historialPaginado(@PathVariable Long idUsuario, @RequestParam int page, @RequestParam int size)
+        {
+            Pageable pageable = PageRequest.of(page, size);
+            return listaCompraRepository.findByUsuarioId(idUsuario, pageable);
+        }
+
+    @GetMapping("/usuario/{idUsuario}/paginado/ordenado")
+    public Page<ListaCompra> historialPaginadoOrdenado
+            (@PathVariable Long idUsuario,
+             @RequestParam int page,
+             @RequestParam int size,
+             @RequestParam(defaultValue = "fechaCreacion") String sortBy,
+             @RequestParam(defaultValue = "desc") String order)
+    {
+        Sort sort = order.equalsIgnoreCase("asc")?
+                Sort.by(sortBy).ascending():
+                Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return listaCompraRepository.findByUsuarioId(idUsuario, pageable);
+    }
+
 }
