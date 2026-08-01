@@ -65,4 +65,14 @@ public class ListaCompraController {
     {
         return listaCompraRepository.findByUsuarioId(idUsuario);
     }
+
+    @GetMapping("/{idLista}")
+    public ResponseEntity<List<ItemLista>> detalle(@PathVariable Long idLista)
+    {
+        List<ItemLista> items = itemListaRepository.detalleLista(idLista);
+        if (items.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(items);
+    }
 }
