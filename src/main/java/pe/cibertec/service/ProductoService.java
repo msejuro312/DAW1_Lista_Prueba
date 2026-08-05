@@ -6,6 +6,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import pe.cibertec.entities.Producto;
 import pe.cibertec.repository.ProductoRepository;
+import pe.cibertec.util.FormatoUtil;
 
 import java.util.List;
 
@@ -14,12 +15,14 @@ public class ProductoService {
     //el de mayúscula es la clase, la minúscula es la variable
     //final porque no se reasigna, solo se asigna una vez
     private final ProductoRepository productoRepository;
+    private final FormatoUtil formatoUtil;
 
     @PersistenceContext
     private EntityManager em;
 
-    public ProductoService(ProductoRepository productoRepository) {
+    public ProductoService(ProductoRepository productoRepository, FormatoUtil formatoUtil) {
         this.productoRepository = productoRepository;
+        this.formatoUtil = formatoUtil;
     }
 
     //inserción por lotes (batching)
@@ -27,6 +30,7 @@ public class ProductoService {
     public void registrarLote(List<Producto> productos){
         int i=0;
         for (Producto p: productos){
+            p.setNombre(formatoUtil.capitalizar(p.getNombre()));
             em.persist(p);
             i++;
             if(i % 10==0){ //cada 10 inserciones
