@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pe.cibertec.entities.Usuario;
 import pe.cibertec.repository.UsuarioRepository;
+import pe.cibertec.service.UsuarioService;
 
 import java.util.List;
 
@@ -14,22 +15,33 @@ import java.util.List;
 //Constructor para inicializar repository
 public class UsuarioController {
 
-    private final UsuarioRepository usuarioRepository;
 
-    public UsuarioController(UsuarioRepository usuarioRepository) {
-        this.usuarioRepository = usuarioRepository;
+    private final UsuarioService usuarioService;
+
+    public UsuarioController(UsuarioService usuarioService) {
+        this.usuarioService = usuarioService;
     }
 
     //Función para registrar un nuevo usuario
     @PostMapping ("/registrar")
     public ResponseEntity<Usuario> registrar(@RequestBody Usuario usuario){
-        Usuario usuarioRegistrado = usuarioRepository.save(usuario);
+        Usuario usuarioRegistrado = usuarioService.registar(usuario);
         return ResponseEntity.ok(usuarioRegistrado);
     }
 
     //FUnción para mostrar todos los usuarios registrados
     @GetMapping
     public List<Usuario> listar(){
-        return usuarioRepository.findAll();
+        return usuarioService.listar();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Usuario> obtener (@PathVariable Long id)
+    {
+        Usuario usuario = usuarioService.obtener(id);
+        if(usuario == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(usuario);
     }
 }
